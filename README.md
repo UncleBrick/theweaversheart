@@ -6,7 +6,7 @@ The site is built and hosted through GitHub Pages, serving as the home for story
 
 🌍 Links
 
-Main site: https://theweaversheart.com/theweaversheart
+Main site: https://theweaversheart.com
 
 GitHub Pages mirror: https://unclebrick.github.io/theweaversheart
 

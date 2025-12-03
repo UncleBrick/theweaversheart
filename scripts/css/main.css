@@ -2,6 +2,9 @@
   --bg-top: #000000;
   --bg-bottom: #1c3a2a; /* deep green */
   --text-main: #e0e0e0; /* light grey for text */
+
+  /* glow color for the heart beat */
+  --heart-glow: rgba(160, 255, 200, 0.55);
 }
 
 * {
@@ -39,26 +42,23 @@ body {
   gap: 1rem;
 }
 
+/* big logo default */
 .logo-full img {
   display: block;
   max-width: min(90vw, 900px); /* cap big logo */
   height: auto;
 }
 
+/* heart (used on phone portrait) */
 .logo-heart {
   display: block;
   max-width: 90vw;
   height: auto;
 }
 
-/* Default: desktop/tablet/landscape - show full logo, hide heart-only */
-.logo-full {
-  display: block;
-}
-
-.logo-heart {
-  display: none;
-}
+/* Default: show full logo, hide heart-only */
+.logo-full { display: block; }
+.logo-heart { display: none; }
 
 .status {
   margin-top: 1.5rem;
@@ -76,40 +76,52 @@ body {
   color: rgba(224, 224, 224, 0.8);
 }
 
-.site-footer p + p {
-  margin-top: 0.25rem;
-}
+.site-footer p + p { margin-top: 0.25rem; }
 
 /* Tablet tweaks */
 @media (min-width: 768px) and (max-width: 844px) {
-  .logo-full img {
-    max-width: 40vw;
-  }
-
-  .status {
-    font-size: 1.6rem;
-  }
+  .logo-full img { max-width: 40vw; }
+  .status { font-size: 1.6rem; }
 }
 
 /* Desktop */
 @media (min-width: 1200px) {
-   .status {
-    font-size: 1.75rem;
-  }
+  .status { font-size: 1.75rem; }
 }
 
-/* Phone portrait: show heart only, hide full logo */
+/* ---------- Heartbeat animation (applied only on phone portrait) ---------- */
+@keyframes heart-beat {
+  /* double-beat pattern */
+  0%   { transform: scale(1); }
+  14%  { transform: scale(1.06); }
+  28%  { transform: scale(1); }
+  42%  { transform: scale(1.05); }
+  70%  { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes heart-glow {
+  0%, 28%, 70%, 100% { filter: drop-shadow(0 0 0 var(--heart-glow)); }
+  14% { filter: drop-shadow(0 0 10px var(--heart-glow)); }
+  42% { filter: drop-shadow(0 0 8px var(--heart-glow)); }
+}
+
+/* Phone portrait: show heart only, hide full logo + animate */
 @media (max-width: 767px) and (orientation: portrait) {
-  .logo-full {
-    display: none;
-  }
+  .logo-full { display: none; }
 
   .logo-heart {
     display: block;
     max-width: 60vw;
+    transform-origin: center center;
+    will-change: transform, filter;
+    animation: heart-beat 1.6s ease-in-out infinite, heart-glow 1.6s ease-in-out infinite;
   }
 
-  .status {
-    font-size: 1.3rem;
-  }
+  .status { font-size: 1.3rem; }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .logo-heart { animation: none !important; }
 }
